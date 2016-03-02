@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script>
+var key = "17hEnXRnsizBBNIFEt1YuASIgeT6hqtnowirXt_mkQuk",
+    url = "https://crossorigin.me/https://spreadsheets.google.com/feeds/list/" + key + "/od6/public/values?alt=json";
+$(document).ready(function(){
+  $.getJSON(url, function(data){
+    console.log(data.feed.entry[0]['gsx$year']['$t']);
+  });
+});
+</script>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+</head>
+<body>
+  <main class="container">
+  <h1>Responsible Budget Reporting</h1>
+  
+  <!-- INTRO AND IMAGE -->
+  <p>Are you concerned a proposed farm bill would spend $195 billion on farm subsidies over the next decade? How about $80.35 billion spent on food stamps last year? Would you be more or less concerned if it were $1.95 billion and $8 billion?</p>
+
+  <p><strong>Would you have any idea what these numbers mean?</strong></p>
+  <img class="img-responsive" alt="budget-reporting-graphic" src="http://www.cepr.net/images/stories/budget-reporting-graphic.jpg" height="275" width="600">
+  
+  <p><strong>We'll even do it for you:</strong></p>
+  <!-- END INTRO AND IMAGE -->
+  
+  <!-- FORM -->
+  <div class="well well-lg">
+    <form role="form" class="form-inline">
+
+      <div class="form-group">
+        <label for="budget_amount" class="control-label">
+          Dollar Amount of Program/Cut/Etc*
+        </label>
+        <div class="input-group">
+          <div class="input-group-addon">$</div>
+          <input class="form-control" type="text" id="budget_amount" value="0" size="4"></input>
+          <div class="input-group-addon">
+            <select class="c-select" id="add_amount">
+              <option value="1000">thousand</option>
+              <option value="1000000">million</option>
+              <option value="1000000000">billion</option>
+              <option value="1000000000000">trillion</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+
+      </div>
+
+    </form>
+  </div>
+  
+  </main>
+</body>
+</html>
