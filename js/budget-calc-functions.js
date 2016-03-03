@@ -1,13 +1,25 @@
 var key = "17hEnXRnsizBBNIFEt1YuASIgeT6hqtnowirXt_mkQuk",
     url = "https://crossorigin.me/https://spreadsheets.google.com/feeds/list/" + key + "/od6/public/values?alt=json",
-    total_percent, total_outlay = 0, entries, budget_year, budget_amount, budget_span, budget_end;
+    total_percent, total_outlay = 0, entries, option, budget_year, budget_amount, budget_span, budget_end;
+
+function find_checked(){for(var x=0;x<=budget_options.length;x++){if(budget_options[x].type=='radio'&&budget_options[x].checked){value=budget_options[x].value;return value;}}}
 
 $(document).ready(function(){
-
+  
+  // grab data from Google Sheet, convert into Object
   $.getJSON(url, { format: "json" }).done(function(data){
    entries = data.feed.entry;
   });
+  
+  // hide advanced calc options
+  $('#budget_options').hide();
 
+  // toggle for advanced
+  $('#advanced').click(function(){
+    $('#budget_options').slideToggle();
+  });
+
+  // basically when any of the values change the calculator runs
   $(".target").change(function(){
     
     budget_year = Number($('#budget_year').val());
@@ -16,25 +28,34 @@ $(document).ready(function(){
     budget_end = budget_year + budget_span;
     
     if(total_outlay > 0) {total_outlay = 0;}
+    
+    option = find_checked();
 
    for(var i in entries) {
-     if(budget_year == entries[i]['gsx$year']['$t'] && budget_year <= budget_end) {
-      total_outlay = total_outlay + Number(entries[i]['gsx$outlays']['$t'].replace(/,/g,""));
+     if(budget_year == entries[i].gsx$year.$t && budget_year <= budget_end) {
+      total_outlay = total_outlay + Number(entries[i].gsx$outlays.$t.replace(/,/g,""));
       budget_year++;
      }
-     total_percent = budget_amount/total_outlay * 100;
    }
+
+   total_percent = budget_amount/total_outlay * 100;
 
   var data = [{
     values: [1-(total_percent/100),(total_percent/100)],
     labels: ['Everything Else','Program/Cut/Etc'],
-    type: 'pie'
+    type: 'pie',
+    marker: {
+      colors: ['rgba(31,73,122,1)','rgba(100,158,212,1)']
+    },
+    insidetextfont: { color:'#FFFFFF', size: 14 },
+    outsidetextfont: { size: 14 }
   }];
 
   var layout = {
     title: "Program/Cut/Etc as Percent of the Unified Budget",
     height: 380,
-    width: 480
+    width: 480,
+    color: '#FFFFFF'
   };
   
   Plotly.newPlot('myDiv', data, layout);
@@ -84,6 +105,6 @@ $(document).ready(function(){
 // else{total_percent=((budget_amount.value.replace(/\,/g,'')*add_amount)/total_outlay);
 // if(total_percent>0.009){budget_percent.innerHTML="$"+ total_percent.toFixed(2);}
 // else{budget_percent.innerHTML="<span>less than</span> $0.01";}}}}}
-// function find_checked(){for(var x=0;x<=budget_options.length;x++){if(budget_options[x].type=='radio'&&budget_options[x].checked){value=budget_options[x].value;return value;}}}
+
 // function show_advanced(){var advanced=document.getElementById("advanced");var calc_space=document.getElementById("calc_space");if(advanced.style.display=="block"){advanced.style.display="none";calc_space.style.height="100px";}
 // else{advanced.style.display="block";calc_space.style.height="150px";}}
