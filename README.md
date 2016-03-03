@@ -1,14 +1,12 @@
-# Project Name
-
-TODO: Responsible Budget Reporting Calculator version 2
-
-## Installation
-
-TODO: Describe the installation process
+# Responsible Budget Reporting Calculator version 2
 
 ## Usage
 
-TODO: Write usage instructions
+Calculator that displays spending figures as a share of the budget over a period of time instead of flat numbers. 
+
+## History
+
+The original Responsible Budget Reporting Calculator was written in 2013 relied on Tabletop.js. At some point, the script stopped working. This version uses JQuery to read the Google Sheets data in a JSON format. It also uses Plotly.js to display results and Bootstrap to keep things responsive and pretty.
 
 ## Contributing
 
@@ -18,14 +16,10 @@ TODO: Write usage instructions
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
-## History
-
-The original Responsible Budget Reporting Calculator relied on Tabletop.js. This version uses JQuery to read Google Spreadsheet data in a JSON format. It also uses Plotly.js to display results.
-
 ## Credits
 
-TODO: Write credits
+Matt Sedlar, Center for Economic Policy and Research, 2016.
 
 ## License
 
-TODO: Write license
+This work is licensed under a Creative Commons Attribution 4.0 International License.
