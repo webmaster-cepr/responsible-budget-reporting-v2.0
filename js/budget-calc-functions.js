@@ -1,6 +1,6 @@
 var key = "17hEnXRnsizBBNIFEt1YuASIgeT6hqtnowirXt_mkQuk",
     url = "https://crossorigin.me/https://spreadsheets.google.com/feeds/list/" + key + "/od6/public/values?alt=json",
-    total_percent, total_outlay = 0, entries, option, budget_year, budget_amount, budget_span, budget_end;
+    total_percent, total = 0, entries, option, budget_year, budget_amount, budget_span, budget_end;
 
 function find_checked(){for(var x=0;x<=budget_options.length;x++){if(budget_options[x].type=='radio'&&budget_options[x].checked){value=budget_options[x].value;return value;}}}
 
@@ -27,18 +27,19 @@ $(document).ready(function(){
     budget_span = Number($('#budget_span').val());
     budget_end = budget_year + budget_span;
     
-    if(total_outlay > 0) {total_outlay = 0;}
+    if(total > 0) {total = 0;}
     
     option = find_checked();
+    option_sheet = 'gsx$' + option;
 
    for(var i in entries) {
      if(budget_year == entries[i].gsx$year.$t && budget_year <= budget_end) {
-      total_outlay = total_outlay + Number(entries[i].gsx$outlays.$t.replace(/,/g,""));
+      total = total + Number(entries[i][option_sheet].$t.replace(/,/g,""));
       budget_year++;
      }
    }
 
-   total_percent = budget_amount/total_outlay * 100;
+   total_percent = budget_amount/total * 100;
 
   var data = [{
     values: [1-(total_percent/100),(total_percent/100)],
@@ -50,12 +51,16 @@ $(document).ready(function(){
     insidetextfont: { color:'#FFFFFF', size: 14 },
     outsidetextfont: { size: 14 }
   }];
+  
+  label = $("#"+option).prop("labels");
 
   var layout = {
-    title: "Program/Cut/Etc as Percent of the Unified Budget",
+    title: "Program/Cut/Etc as " + $(label).text().replace(/^\s*/,""),
     height: 380,
     width: 480,
-    color: '#FFFFFF'
+    font: {
+      family: 'Verdana,sans-serif'
+    }
   };
   
   Plotly.newPlot('myDiv', data, layout);
@@ -72,7 +77,7 @@ $(document).ready(function(){
     // var budget_amount=document.getElementById("budget_amount");
     // var add_amount=document.getElementById("add_amount").value;
     // var budget_span=document.getElementById("budget_span").value;
-    // var total_outlay=0;
+    // var total=0;
     // var total_percent;
     // Tabletop.init({key:public_spreadsheet_url,callback:showInfo,simpleSheet:true});
     // function showInfo(data){
@@ -82,27 +87,27 @@ $(document).ready(function(){
     //     find_checked();
     //     if(budget_year==data[i].year&&budget_year<=budget_end){
     //       switch(value){
-    //         case"outlays":total_outlay=total_outlay+ parseFloat(data[i].outlays.replace(/\,/g,''));
+    //         case"outlays":total=total+ parseFloat(data[i].outlays.replace(/\,/g,''));
     //         budget_description.innerHTML="Percent of Budget";
     //         break;
-    //         case"revenue":total_outlay=total_outlay+ parseFloat(data[i].revenue.replace(/\,/g,''));
+    //         case"revenue":total=total+ parseFloat(data[i].revenue.replace(/\,/g,''));
     //         budget_description.innerHTML="Percent of Revenues";
     //         break;
-    //         case"population":total_outlay=total_outlay+ parseFloat(data[i].population.replace(/\,/g,''));
+    //         case"population":total=total+ parseFloat(data[i].population.replace(/\,/g,''));
     //         budget_description.innerHTML="Per Capita";
     //         break;
-    //         case"discretionary":total_outlay=total_outlay+ parseFloat(data[i].discretionary.replace(/\,/g,''));
+    //         case"discretionary":total=total+ parseFloat(data[i].discretionary.replace(/\,/g,''));
     //         budget_description.innerHTML="Percent of Discretionary";
     //         break;
     //       }
     //   budget_year++;
-    //   console.log(total_outlay);
+    //   console.log(total);
           
     //     }
-// if(value!="population"){total_percent=((budget_amount.value.replace(/\,/g,'')*add_amount)/total_outlay) * 100;
+// if(value!="population"){total_percent=((budget_amount.value.replace(/\,/g,'')*add_amount)/total) * 100;
 // if(total_percent>0.00009){budget_percent.innerHTML=total_percent.toFixed(4)+"%";}
 // else{budget_percent.innerHTML="<span>less than</span> 0.0001%";}}
-// else{total_percent=((budget_amount.value.replace(/\,/g,'')*add_amount)/total_outlay);
+// else{total_percent=((budget_amount.value.replace(/\,/g,'')*add_amount)/total);
 // if(total_percent>0.009){budget_percent.innerHTML="$"+ total_percent.toFixed(2);}
 // else{budget_percent.innerHTML="<span>less than</span> $0.01";}}}}}
 

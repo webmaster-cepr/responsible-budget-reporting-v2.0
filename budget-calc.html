@@ -21,8 +21,18 @@
         margin: 0 auto;
       }
       .svg-container { margin: 0 auto !important; }
-      label { padding: 6px; }
+      label {
+        padding: 6px;
+        font-family: Verdana,Arial,Helvetica,sans-serif;
+      }
       #budget_amount { width: 100px; }
+      p {
+        margin-bottom: 1em;
+        font-size: 12px;
+        color: #5A5050;
+        font-family: Verdana,Arial,Helvetica,sans-serif;
+        line-height: 18px;
+      }
   </style>
 
 </head>
@@ -95,14 +105,18 @@
       
     </form>
     
-    <form role="form" id="budget_options"><!-- ADVANCED OPTIONS -->
+    <form role="form" id="budget_options" class="target"><!-- ADVANCED OPTIONS -->
     <hr/>
       <div class="form-group">
         <p class="help-block">I would like to see this expressed as</p>
-        <label class="radio-inline"><input type="radio" name="advanced" value="population" disabled>Per Capita</label>
-        <label class="radio-inline"><input type="radio" name="advanced" value="revenue" disabled>% of Total Revenues</label>
-        <label class="radio-inline"><input type="radio" name="advanced" value="discretionary" disabled>% of Discretionary Spending</label>
-        <label class="radio-inline"><input type="radio" name="advanced" value="outlays" checked>% of the Unified Budget</label>
+        <label class="radio-inline" for="population">
+          <input id="population" type="radio" name="advanced" value="population" disabled>Per Capita</label>
+        <label class="radio-inline" for="revenue">
+          <input id="revenue" type="radio" name="advanced" value="revenue">% of Total Revenues</label>
+        <label class="radio-inline" for="discretionary">
+          <input id="discretionary" type="radio" name="advanced" value="discretionary">% of Discretionary Spending</label>
+        <label class="radio-inline" for="outlays">
+          <input id="outlays" type="radio" name="advanced" value="outlays" checked>% of the Unified Budget</label>
       </div>
   </form>
     
@@ -111,6 +125,7 @@
   <!-- PLOTLY -->
   
     <div id="myDiv" style="width: 480px; height: 380px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+    <div id="budget_description"></div>
     
   <!-- END PLOTLY -->
   
