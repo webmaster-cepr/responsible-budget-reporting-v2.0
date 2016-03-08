@@ -1,5 +1,5 @@
 var key = "17hEnXRnsizBBNIFEt1YuASIgeT6hqtnowirXt_mkQuk",
-    url = "https://spreadsheets.google.com/feeds/list/" + key + "/od6/public/values?alt=json",
+    url = "https://spreadsheets.google.com/feeds/list/" + key + "/ooec1sa/public/values?alt=json",
     total_percent, total = 0, entries, option, budget_year, budget_amount, budget_span, budget_end;
 
 function find_checked(){for(var x=0;x<=budget_options.length;x++){if(budget_options[x].type=='radio'&&budget_options[x].checked){value=budget_options[x].value;return value;}}}
