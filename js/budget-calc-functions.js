@@ -1,10 +1,13 @@
 var key = "17hEnXRnsizBBNIFEt1YuASIgeT6hqtnowirXt_mkQuk",
     url = "https://spreadsheets.google.com/feeds/list/" + key + "/ooec1sa/public/values?alt=json",
-    total_percent, total = 0, entries, option, budget_year, budget_amount, budget_span, budget_end;
+    total_percent, total_percap, total = 0, entries, option, budget_year, budget_amount, budget_span, budget_end;
 
 function find_checked(){for(var x=0;x<=budget_options.length;x++){if(budget_options[x].type=='radio'&&budget_options[x].checked){value=budget_options[x].value;return value;}}}
 
 $(document).ready(function(){
+  
+  // hide plot and per-capita divs on load
+  $('#plot,#percapita').hide();
   
   // grab data from Google Sheet, convert into Object
   $.getJSON(url, { format: "json" }).done(function(data){
@@ -39,77 +42,48 @@ $(document).ready(function(){
      }
    }
 
-   total_percent = budget_amount/total * 100;
+  if (option != "population") {
 
-  var data = [{
-    values: [1-(total_percent/100),(total_percent/100)],
-    labels: ['Everything Else','Program/Cut/Etc'],
-    type: 'pie',
-    marker: {
-      colors: ['rgba(31,73,122,1)','rgba(100,158,212,1)']
-    },
-    insidetextfont: { color:'#FFFFFF', size: 14 },
-    outsidetextfont: { size: 14 }
-  }];
-  
-  label = $("#"+option).prop("labels");
+    $('#percapita').hide();
 
-  var layout = {
-    title: "Program/Cut/Etc as " + $(label).text().replace(/^\s*/,""),
-    height: 380,
-    width: 480,
-    font: {
-      family: 'Verdana,sans-serif'
-    }
-  };
+    total_percent = budget_amount/total * 100;
+
+    var data = [{
+      values: [1-(total_percent/100),(total_percent/100)],
+      labels: ['Everything Else','Program/Cut/Etc'],
+      type: 'pie',
+      marker: {
+        colors: ['rgba(31,73,122,1)','rgba(100,158,212,1)']
+      },
+      insidetextfont: { color:'#FFFFFF', size: 14 },
+      outsidetextfont: { size: 14 }
+    }];
+    
+    label = $("#"+option).prop("labels");
   
-  Plotly.newPlot('myDiv', data, layout);
+    var layout = {
+      title: "Program/Cut/Etc as " + $(label).text().replace(/^\s*/,""),
+      height: 380,
+      width: 480,
+      font: {
+        family: 'Verdana,sans-serif'
+      }
+    };
+    
+    Plotly.newPlot('plot', data, layout);
+    $('#plot').show();
+  
+  } else {
+    $('#plot').hide();
+    
+    total_percap = budget_amount/total;
+    
+    $('#percapita_num h3').html("$" + total_percap.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " Per Capita");
+    
+    $('#percapita').show();
+  }
+
     
   });
   
 });
-
-
-// function calculate_budget_percent(){
-    // var budget_year=document.getElementById("budget_year").value;
-    // var budget_percent=document.getElementById("budget_percent");
-    // var budget_description=document.getElementById("budget_description");
-    // var budget_amount=document.getElementById("budget_amount");
-    // var add_amount=document.getElementById("add_amount").value;
-    // var budget_span=document.getElementById("budget_span").value;
-    // var total=0;
-    // var total_percent;
-    // Tabletop.init({key:public_spreadsheet_url,callback:showInfo,simpleSheet:true});
-    // function showInfo(data){
-    //   var budget_end=parseFloat(budget_year) + parseFloat(budget_span);
-    //   var budget_options=document.getElementById("budget_options");
-    //   for(var i=0;i<=data.length;i++) {
-    //     find_checked();
-    //     if(budget_year==data[i].year&&budget_year<=budget_end){
-    //       switch(value){
-    //         case"outlays":total=total+ parseFloat(data[i].outlays.replace(/\,/g,''));
-    //         budget_description.innerHTML="Percent of Budget";
-    //         break;
-    //         case"revenue":total=total+ parseFloat(data[i].revenue.replace(/\,/g,''));
-    //         budget_description.innerHTML="Percent of Revenues";
-    //         break;
-    //         case"population":total=total+ parseFloat(data[i].population.replace(/\,/g,''));
-    //         budget_description.innerHTML="Per Capita";
-    //         break;
-    //         case"discretionary":total=total+ parseFloat(data[i].discretionary.replace(/\,/g,''));
-    //         budget_description.innerHTML="Percent of Discretionary";
-    //         break;
-    //       }
-    //   budget_year++;
-    //   console.log(total);
-          
-    //     }
-// if(value!="population"){total_percent=((budget_amount.value.replace(/\,/g,'')*add_amount)/total) * 100;
-// if(total_percent>0.00009){budget_percent.innerHTML=total_percent.toFixed(4)+"%";}
-// else{budget_percent.innerHTML="<span>less than</span> 0.0001%";}}
-// else{total_percent=((budget_amount.value.replace(/\,/g,'')*add_amount)/total);
-// if(total_percent>0.009){budget_percent.innerHTML="$"+ total_percent.toFixed(2);}
-// else{budget_percent.innerHTML="<span>less than</span> $0.01";}}}}}
-
-// function show_advanced(){var advanced=document.getElementById("advanced");var calc_space=document.getElementById("calc_space");if(advanced.style.display=="block"){advanced.style.display="none";calc_space.style.height="100px";}
-// else{advanced.style.display="block";calc_space.style.height="150px";}}

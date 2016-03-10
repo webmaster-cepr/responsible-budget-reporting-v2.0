@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- JQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -14,12 +15,13 @@
 
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <style>
-      #myDiv {
+      #results {
         width: 500px;
-        height: 400px;
+        height: 360px;
         text-align: center;
         margin: 0 auto;
       }
+      #percapita { padding-top: 24px; }
       .svg-container { margin: 0 auto !important; }
       label {
         padding: 6px;
@@ -113,7 +115,7 @@
       <div class="form-group">
         <p class="help-block">I would like to see this expressed as</p>
         <label class="radio-inline" for="population">
-          <input id="population" type="radio" name="advanced" value="population" disabled>Per Capita</label>
+          <input id="population" type="radio" name="advanced" value="population">Per Capita</label>
         <label class="radio-inline" for="revenue">
           <input id="revenue" type="radio" name="advanced" value="revenue">% of Total Revenues</label>
         <label class="radio-inline" for="discretionary">
@@ -125,13 +127,26 @@
     
   </div><!-- END FORMS -->
   
-  <!-- PLOTLY -->
-  
-    <div id="myDiv" style="width: 480px; height: 380px;"><!-- Plotly chart will be drawn inside this DIV --></div>
-    <div id="budget_description"></div>
+  <div id="results"><!-- RESULTS -->
     
-  <!-- END PLOTLY -->
+    <!-- PLOTLY -->
+    
+    <div id="plot"><!-- Plotly chart will be drawn inside this DIV --></div>
+    
+    <!-- END PLOTLY -->
+    
+    <!-- PER CAPITA OPTION -->
+    <div id="percapita">
+      <div id="percapita_num" class="text-center">
+        <h3></h3>
+        <img src="per-capita-man.png" width="100" height="235"/>
+      </div>
+    </div>
   
+  </div><!-- END RESULTS -->
+  
+  <hr/>
+
   <p><em>* Confidential to the New York Times: 1 million = 1,000,000 (six zeroes); 1 billion = 1,000,000,000 (nine zeroes); 1 trillion = 1,000,000,000,000 (12 zeroes).</em></p>
 
   <p>Source: Congressional Budget Office, The Budget and Economic Outlook, Fiscal Years 2013 to 2023; Census Bureau; and basic arithmetic.</p>
